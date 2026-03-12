@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/models"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/utils"
+	"cbt/models"
+	"cbt/utils"
 )
 
 // ExamHandler holds the database connection

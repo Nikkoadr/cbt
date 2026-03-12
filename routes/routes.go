@@ -7,14 +7,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/config"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/handlers"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/middleware"
+	"cbt/config"
+	"cbt/handlers"
+	"cbt/middleware"
 )
 
 // SetupRouter sets up the router
 func SetupRouter(db *gorm.DB, cfg config.Config) *gin.Engine {
 	r := gin.Default()
+
+	// Set trusted proxies
+	r.SetTrustedProxies([]string{"127.0.0.1"})
 
 	// Middleware
 	r.Use(cors.New(cors.Config{

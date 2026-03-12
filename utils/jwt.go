@@ -5,8 +5,8 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/config"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/models"
+	"cbt/config"
+	"cbt/models"
 )
 
 // GenerateJWT generates a new JWT token

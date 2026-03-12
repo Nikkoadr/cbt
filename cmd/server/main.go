@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/config"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/database"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/routes"
+	"cbt/config"
+	"cbt/database"
+	"cbt/routes"
 )
 
 func main() {

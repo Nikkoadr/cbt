@@ -1,4 +1,4 @@
-module github.com/GoogleCloudPlatform/golang-samples/run/helloworld
+module cbt
 
 go 1.25.0
 

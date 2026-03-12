@@ -6,8 +6,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/config"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/models"
+	"cbt/config"
+	"cbt/models"
 )
 
 // ConnectDB connects to the database

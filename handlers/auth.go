@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/config"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/models"
-	"github.com/GoogleCloudPlatform/golang-samples/run/helloworld/utils"
+	"cbt/config"
+	"cbt/models"
+	"cbt/utils"
 )
 
 // AuthHandler holds the database connection
