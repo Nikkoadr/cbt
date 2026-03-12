@@ -1,9 +1,12 @@
 package models
 
-import "gorm.io/gorm"
-
 // Kelas represents the kelas model
 type Kelas struct {
-	gorm.Model
-	NamaKelas string `gorm:"unique"`
+	ID               uint    `gorm:"primaryKey"`
+	TingkatID        uint
+	JurusanID        uint
+	NomorKelas       string  `gorm:"type:varchar(5)"`
+	NamaKelasLengkap string  `gorm:"type:varchar(50)"`
+	Tingkat          Tingkat `gorm:"foreignKey:TingkatID"`
+	Jurusan          Jurusan `gorm:"foreignKey:JurusanID"`
 }
