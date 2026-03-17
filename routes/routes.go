@@ -1,60 +1,43 @@
 package routes
 
 import (
-	"net/http"
-
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
-
 	"cbt/config"
 	"cbt/handlers"
 	"cbt/middleware"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-// SetupRouter sets up the router
-func SetupRouter(db *gorm.DB, cfg config.Config) *gin.Engine {
+func SetupRouter(db *gorm.DB, cfg *config.Config) *gin.Engine {
 	r := gin.Default()
 
-	// Set trusted proxies
-	r.SetTrustedProxies([]string{"127.0.0.1"})
-
-	// Middleware
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"}, // Adjust for your frontend
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-	}))
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
-
 	// Handlers
-	authHandler := &handlers.AuthHandler{DB: db, Cfg: cfg}
 	examHandler := &handlers.ExamHandler{DB: db}
+	adminHandler := &handlers.AdminHandler{DB: db}
 
-	// Routes
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "API sudah berjalan"})
-	})
-
+	// Root group
 	api := r.Group("/api")
-	{
-		auth := api.Group("/auth")
-		{
-			auth.POST("/login", authHandler.Login)
-			auth.POST("/logout", authHandler.Logout)
-			auth.GET("/me", middleware.AuthMiddleware(cfg), authHandler.Me)
-		}
 
-		exam := api.Group("/exam")
-		exam.Use(middleware.AuthMiddleware(cfg))
-		{
-			exam.GET("/today", examHandler.GetTodayExams)
-			exam.GET("/:id", examHandler.GetExamDetails)
-			exam.GET("/:id/access", examHandler.CheckExamAccess)
-		}
+	// Public route for login
+	api.POST("/login", middleware.LoginHandler(cfg.JWTSecret, db))
+
+	// Routes for Siswa, protected by SiswaMiddleware
+	siswaRoutes := api.Group("/siswa")
+	siswaRoutes.Use(middleware.SiswaMiddleware(cfg.JWTSecret))
+	{
+		siswaRoutes.GET("/ujian/daftar", examHandler.GetDaftarUjian)
+		siswaRoutes.POST("/ujian/:id/mulai", examHandler.MulaiUjian)
+		siswaRoutes.POST("/ujian/sesi/:sesiID/simpan", examHandler.SimpanJawaban)
+		siswaRoutes.POST("/ujian/sesi/:sesiID/selesai", examHandler.SelesaikanUjian)
+	}
+
+	// Routes for Admin/Pengawas, protected by AdminMiddleware
+	adminRoutes := api.Group("/admin")
+	adminRoutes.Use(middleware.AdminMiddleware(cfg.JWTSecret))
+	{
+		adminRoutes.POST("/ujian/sesi/:sesiID/koreksi", adminHandler.KoreksiUjian)
+		adminRoutes.GET("/ujian/:id/token", adminHandler.GetUjianToken)
 	}
 
 	return r

@@ -19,11 +19,12 @@ const (
 
 // Soal represents the soal model
 type Soal struct {
-	ID              uint                 `gorm:"primaryKey"`
-	GuruID          *uint
-	TeksSoal        string               `gorm:"type:text;not null"`
-	TipeSoal        TipeSoal             `gorm:"type:enum('pg','essay');default:'pg'"`
-	KategoriSoal    string               `gorm:"type:varchar(100)"`
+	ID               uint                 `gorm:"primaryKey"`
+	UjianID          uint                 `gorm:"not null"` // Foreign key untuk Ujian
+	GuruID           *uint
+	TeksSoal         string               `gorm:"type:text;not null"`
+	TipeSoal         TipeSoal             `gorm:"type:enum('pg','essay');default:'pg'"`
+	KategoriSoal     string               `gorm:"type:varchar(100)"`
 	TingkatKesulitan TingkatKesulitanSoal `gorm:"type:enum('mudah','sedang','sulit');default:'sedang'"`
-	Guru            *Guru                `gorm:"foreignKey:GuruID"`
+	Guru             *Guru                `gorm:"foreignKey:GuruID"`
 }

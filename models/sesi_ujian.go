@@ -2,8 +2,8 @@ package models
 
 import "time"
 
-// UjianPercobaan represents the ujian_percobaan model
-type UjianPercobaan struct {
+// SesiUjian represents the sesi_ujian model
+type SesiUjian struct {
 	ID           uint      `gorm:"primaryKey"`
 	UjianID      uint
 	SiswaID      uint
